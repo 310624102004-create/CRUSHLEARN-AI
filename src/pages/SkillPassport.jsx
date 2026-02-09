@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthService } from '../utils/auth';
 import { GuidanceEngine } from '../ai/guidanceEngine';
 import { courses } from '../data/mockCourseData';
+
+const RESULT_KEY = 'final_skill_check_result';
 
 const SkillPassport = () => {
   const user = AuthService.getCurrentUser();
@@ -13,14 +16,27 @@ const SkillPassport = () => {
   const totalLessonsCompleted = user.completedLessons?.length || 0;
   const coursesInProgress = user.enrolledCourses?.length || 0;
 
-  // Mock certificates - would be generated based on completed courses
+  const finalResult = useMemo(() => {
+    const raw = localStorage.getItem(RESULT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }, []);
+
+  const hasPassedFinal = Boolean(finalResult?.passed);
+  const issuedDate = finalResult?.submittedAt
+    ? new Date(finalResult.submittedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'Pending';
+
   const certificates = [
     {
       id: 'cert-1',
       title: 'Web Development Fundamentals',
-      issueDate: 'Pending',
-      status: 'in-progress',
-      progress: 0,
+      issueDate: hasPassedFinal ? issuedDate : 'Pending',
+      status: hasPassedFinal ? 'completed' : 'in-progress',
+      progress: hasPassedFinal ? 100 : 0,
     },
   ];
 
@@ -112,6 +128,20 @@ const SkillPassport = () => {
             {certificates.filter((c) => c.status === 'completed').length} earned
           </span>
         </div>
+
+        {!hasPassedFinal && (
+          <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 mb-4">
+            <p className="text-sm text-gray-700">
+              Complete the Final Skill Check to unlock your certificate.
+            </p>
+            <Link
+              to="/final-skill-check"
+              className="inline-block mt-3 px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-semibold"
+            >
+              Start Final Skill Check
+            </Link>
+          </div>
+        )}
 
         <div className="space-y-4">
           {certificates.map((cert) => (

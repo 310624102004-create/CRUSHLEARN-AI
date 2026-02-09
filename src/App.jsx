@@ -16,6 +16,8 @@ import Lesson from './pages/Lesson';
 import SkillPassport from './pages/SkillPassport';
 import Certificate from './pages/Certificate';
 import Profile from './pages/Profile';
+import FinalSkillCheck from './pages/FinalSkillCheck';
+import About from './pages/About';
 
 function App() {
   const isAuthenticated = AuthService.isAuthenticated();
@@ -51,7 +53,7 @@ function App() {
               <ProtectedRoute>
                 <div className="flex flex-col min-h-screen">
                   <Navbar />
-                  <div className="flex flex-1 pt-16">
+                  <div className="flex flex-1 pt-24">
                     <Sidebar />
                     <main className="flex-1 md:ml-64">
                       <Routes>
@@ -63,6 +65,11 @@ function App() {
                         />
                         <Route path="/skill-passport" element={<SkillPassport />} />
                         <Route
+                          path="/final-skill-check"
+                          element={<FinalSkillCheck />}
+                        />
+                        <Route path="/about" element={<About />} />
+                        <Route
                           path="/certificate/:certificateId"
                           element={<Certificate />}
                         />
@@ -73,6 +80,11 @@ function App() {
                       </Routes>
                     </main>
                   </div>
+                  <footer className="border-t border-gray-200 bg-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                      <p className="text-sm text-gray-500">CrushLearn AI</p>
+                    </div>
+                  </footer>
                 </div>
               </ProtectedRoute>
             }

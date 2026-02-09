@@ -13,6 +13,9 @@ const Lesson = () => {
   const user = AuthService.getCurrentUser();
   const videoRef = useRef(null);
   const simulationRef = useRef(null);
+  const [isOffline, setIsOffline] = useState(
+    localStorage.getItem('offline_mode') === 'true'
+  );
 
   // Existing state
   const [showHints, setShowHints] = useState(false);
@@ -74,6 +77,26 @@ const Lesson = () => {
       setSimulationPassed(progress.passed || false);
     }
   }, [simulationTask.id]);
+
+  useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === 'offline_mode') {
+        setIsOffline(event.newValue === 'true');
+      }
+    };
+
+    const handleLocalToggle = () => {
+      setIsOffline(localStorage.getItem('offline_mode') === 'true');
+    };
+
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('offline-mode-change', handleLocalToggle);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('offline-mode-change', handleLocalToggle);
+    };
+  }, []);
 
   // Load progress from localStorage
   useEffect(() => {
@@ -165,6 +188,27 @@ const Lesson = () => {
             className="text-primary-600 hover:text-primary-700 font-medium"
           >
             ← Back to Dashboard
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (isOffline && !completed) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white border border-gray-200 rounded-xl p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+            Offline Mode Restriction
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Only completed lessons are accessible while Offline Mode is enabled.
+          </p>
+          <Link
+            to={`/course/${courseId}`}
+            className="text-gray-900 font-medium"
+          >
+            Return to Course
           </Link>
         </div>
       </div>

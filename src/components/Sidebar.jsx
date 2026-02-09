@@ -8,6 +8,7 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📚' },
     { path: '/skill-passport', label: 'Skill Passport', icon: '🎓' },
+    { path: '/about', label: 'About', icon: 'ℹ️' },
     { path: '/profile', label: 'Profile', icon: '👤' },
   ];
 

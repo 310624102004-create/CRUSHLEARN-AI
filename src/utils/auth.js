@@ -49,8 +49,8 @@ export const AuthService = {
         name: email.split('@')[0],
         email: email,
         enrolledCourses: ['web-dev-101', 'python-basics'],
-        completedLessons: [],
-        learningStreak: 5, // Mock streak - in real app, calculate from activity
+        completedLessons: ['lesson-1', 'lesson-2'],
+        learningStreak: 7, // Mock streak - in real app, calculate from activity
         lastActivityDate: new Date().toISOString(),
         skillPassport: {
           skills: ['HTML', 'CSS', 'JavaScript Basics'],

@@ -145,6 +145,12 @@ const Simulation = ({ taskId, taskData, onComplete }) => {
         </div>
       </div>
 
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+        <p className="text-xs text-gray-600">
+          AI guidance is disabled during skill verification.
+        </p>
+      </div>
+
       {/* Task Description */}
       <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
         <h3 className="font-bold text-gray-900 mb-2">📋 Task:</h3>
